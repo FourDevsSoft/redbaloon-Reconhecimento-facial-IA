@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia código-fonte
 COPY src/ ./src/
-COPY static/ ./static/
+#COPY static/ ./static/
 
 # Cria diretórios de runtime
 RUN mkdir -p data logs database
