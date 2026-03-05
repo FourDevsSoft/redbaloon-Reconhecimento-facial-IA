@@ -195,16 +195,30 @@ class FaceService:
             with open(CACHE_FILE, "rb") as f:
                 data = pickle.load(f)  # noqa: S301
 
-            if not isinstance(data, dict) or not data:
-                logger.warning("Cache vazio ou formato inesperado. Regenerando…")
-                return False
+            # Formato novo: dict {name: embedding_list}
+            if isinstance(data, dict) and data:
+                self.known_faces = {
+                    name: np.array(emb, dtype=np.float32)
+                    for name, emb in data.items()
+                }
+                logger.info("Cache carregado: %d rosto(s) (formato dict).", len(self.known_faces))
+                return True
 
-            self.known_faces = {
-                name: np.array(emb, dtype=np.float32)
-                for name, emb in data.items()
-            }
-            logger.info("Cache carregado: %d rosto(s) (load instantâneo).", len(self.known_faces))
-            return True
+            # Formato legado: list [{"id": ..., "embedding": ...}, ...]
+            if isinstance(data, list) and data:
+                for entry in data:
+                    name = entry.get("id") or entry.get("name") or entry.get("filename", "")
+                    # Remove extensão se veio do filename (ex: "Jailson.png" → "Jailson")
+                    name = Path(name).stem if "." in name else name
+                    emb = entry.get("embedding")
+                    if name and emb is not None:
+                        self.known_faces[name] = np.array(emb, dtype=np.float32)
+                if self.known_faces:
+                    logger.info("Cache carregado: %d rosto(s) (formato legado list).", len(self.known_faces))
+                    return True
+
+            logger.warning("Cache vazio ou formato inesperado. Regenerando…")
+            return False
 
         except (pickle.UnpicklingError, EOFError, ValueError) as exc:
             logger.warning("Cache corrompido (%s). Regenerando…", exc)
