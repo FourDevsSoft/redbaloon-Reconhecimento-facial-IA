@@ -25,9 +25,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia código-fonte
 COPY src/ ./src/
-#COPY static/ ./static/
 
-# Cria diretórios de runtime
+# Copia fotos cadastradas (se existirem no repo)
+COPY database/ ./database/
+
+# Copia cache de embeddings (se existir no repo)
+COPY data/ ./data/
+
+# Cria diretórios de runtime (caso não existam)
 RUN mkdir -p data logs database
 
 EXPOSE 8000
