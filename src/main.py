@@ -24,7 +24,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
 
-from src.config import API_HOST, API_KEY, API_PORT, API_TITLE, API_VERSION, LOGS_DIR
+from src.config import API_HOST, API_KEY, API_PORT, API_TITLE, API_VERSION, CORS_ORIGINS, LOGS_DIR
 from src.services.face_service import FaceService
 
 # ── Logging ─────────────────────────────────────────────────────────
@@ -70,7 +70,7 @@ app = FastAPI(
 # ── CORS ─────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
