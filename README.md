@@ -241,5 +241,11 @@ verify(imageBlob: Blob): Observable<VerifyResponse> {
 
 ## Variáveis de Ambiente
 
-Não há variáveis obrigatórias. Tudo é configurado via `src/config.py`.  
-Para alterar porta ou thresholds, edite o arquivo diretamente ou adapte para `os.environ`.
+A aplicação agora suporta configuração dinâmica usando variáveis de ambiente ou arquivo `.env` para facilitar o deploy e melhorar a segurança, sem necessidade de alterar o código.
+
+As seguintes variáveis de ambiente principais podem ser configuradas (por exemplo, no painel do EasyPanel ou Docker Compose):
+
+| Variável         | Descrição                                                                                                                                                 | Default                       |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `API_KEY`        | Chave de comunicação com a API. Protege os endpoints (exceto `/health`). Ex: `API_KEY=minha_chave_segura_123`                                             | `changeme-insecure-key-12345` |
+| `CORS_ORIGINS`   | Domínios permitidos pelo interceptador CORS, separados por vírgula. Ex: `CORS_ORIGINS=http://localhost:4200,https://app.escola.com`                       | `*`                           |
