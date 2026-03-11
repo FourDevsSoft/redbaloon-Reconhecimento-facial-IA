@@ -46,7 +46,7 @@ from dotenv import load_dotenv
 load_dotenv()  # Carrega o arquivo .env se ele existir localmente
 
 # ── Autenticação ────────────────────────────────────────────────────
-API_KEY = os.getenv("API_KEY", "changeme-insecure-key-12345")
+API_KEY = os.getenv("API_KEY")
 
 # ── CORS Dinâmico ───────────────────────────────────────────────────
 cors_str = os.getenv("CORS_ORIGINS", "*")
