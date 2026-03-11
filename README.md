@@ -131,6 +131,52 @@ Content-Type: multipart/form-data
 
 ---
 
+### `POST /register`
+
+Vetoriza uma nova foto em tempo real e cadastra no banco dinâmico da aplicação, sem precisar reiniciar o serviço. 
+Esse endpoint tem sido usado também para o **cadastramento dinâmico da equipe**. Note que as faces cadastradas via essa rota vão para o dicionário e para o `.pkl` da base de "responsáveis" (`registered_faces.pkl`).
+
+**Request:**
+
+```
+Content-Type: multipart/form-data
+```
+
+| Campo | Tipo       | Obrigatório | Descrição                                    |
+| ----- | ---------- | ----------- | -------------------------------------------- |
+| id    | string     | Sim         | ID do funcionário ou responsável a cadastrar |
+| file  | UploadFile | Sim         | Imagem (JPEG/PNG) contendo o rosto           |
+
+**Response `200` (Sucesso) ou `400` (Erro):**
+
+```json
+{
+  "status": "ok",
+  "id": "9999",
+  "message": "Rosto cadastrado com sucesso. Total: X responsável(is)."
+}
+```
+
+---
+
+### `DELETE /unregister/{id}`
+
+Remove dinamicamente um rosto cadastrado do banco em memória e do arquivo dinâmico `.pkl`.
+
+**Request:** `DELETE /unregister/9999`
+
+**Response `200` (Sucesso) ou `404` (Não encontrado):**
+
+```json
+{
+  "status": "ok",
+  "id": "9999",
+  "message": "Rosto removido com sucesso."
+}
+```
+
+---
+
 ### `GET /refresh-db`
 
 Força releitura da pasta `database/` e recria o cache `.pkl`.  
