@@ -24,4 +24,9 @@ Thumbs.db
 # folders
 doc
 docs
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
 pytests_results
