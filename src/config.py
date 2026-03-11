@@ -39,6 +39,15 @@ API_PORT    = 8000
 API_TITLE   = "Identity Service — Reconhecimento Facial"
 API_VERSION = "1.2.0"
 
-# ── Autenticação ────────────────────────────────────────────────────
+# ── Carregamento .env ───────────────────────────────────────────────
 import os
-API_KEY = os.environ.get("API_KEY", "changeme-insecure-key-12345")
+from dotenv import load_dotenv
+
+load_dotenv()  # Carrega o arquivo .env se ele existir localmente
+
+# ── Autenticação ────────────────────────────────────────────────────
+API_KEY = os.getenv("API_KEY", "changeme-insecure-key-12345")
+
+# ── CORS Dinâmico ───────────────────────────────────────────────────
+cors_str = os.getenv("CORS_ORIGINS", "*")
+CORS_ORIGINS = [url.strip() for url in cors_str.split(",")] if cors_str != "*" else ["*"]

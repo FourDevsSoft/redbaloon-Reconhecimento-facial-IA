@@ -7,3 +7,4 @@ insightface
 onnxruntime
 pytest
 httpx
+python-dotenv

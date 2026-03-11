@@ -131,6 +131,52 @@ Content-Type: multipart/form-data
 
 ---
 
+### `POST /register`
+
+Vetoriza uma nova foto em tempo real e cadastra no banco dinâmico da aplicação, sem precisar reiniciar o serviço. 
+Esse endpoint tem sido usado também para o **cadastramento dinâmico da equipe**. Note que as faces cadastradas via essa rota vão para o dicionário e para o `.pkl` da base de "responsáveis" (`registered_faces.pkl`).
+
+**Request:**
+
+```
+Content-Type: multipart/form-data
+```
+
+| Campo | Tipo       | Obrigatório | Descrição                                    |
+| ----- | ---------- | ----------- | -------------------------------------------- |
+| id    | string     | Sim         | ID do funcionário ou responsável a cadastrar |
+| file  | UploadFile | Sim         | Imagem (JPEG/PNG) contendo o rosto           |
+
+**Response `200` (Sucesso) ou `400` (Erro):**
+
+```json
+{
+  "status": "ok",
+  "id": "9999",
+  "message": "Rosto cadastrado com sucesso. Total: X responsável(is)."
+}
+```
+
+---
+
+### `DELETE /unregister/{id}`
+
+Remove dinamicamente um rosto cadastrado do banco em memória e do arquivo dinâmico `.pkl`.
+
+**Request:** `DELETE /unregister/9999`
+
+**Response `200` (Sucesso) ou `404` (Não encontrado):**
+
+```json
+{
+  "status": "ok",
+  "id": "9999",
+  "message": "Rosto removido com sucesso."
+}
+```
+
+---
+
 ### `GET /refresh-db`
 
 Força releitura da pasta `database/` e recria o cache `.pkl`.  
@@ -241,5 +287,11 @@ verify(imageBlob: Blob): Observable<VerifyResponse> {
 
 ## Variáveis de Ambiente
 
-Não há variáveis obrigatórias. Tudo é configurado via `src/config.py`.  
-Para alterar porta ou thresholds, edite o arquivo diretamente ou adapte para `os.environ`.
+A aplicação agora suporta configuração dinâmica usando variáveis de ambiente ou arquivo `.env` para facilitar o deploy e melhorar a segurança, sem necessidade de alterar o código.
+
+As seguintes variáveis de ambiente principais podem ser configuradas (por exemplo, no painel do EasyPanel ou Docker Compose):
+
+| Variável         | Descrição                                                                                                                                                 | Default                       |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `API_KEY`        | Chave de comunicação com a API. Protege os endpoints (exceto `/health`). Ex: `API_KEY=minha_chave_segura_123`                                             | `changeme-insecure-key-12345` |
+| `CORS_ORIGINS`   | Domínios permitidos pelo interceptador CORS, separados por vírgula. Ex: `CORS_ORIGINS=http://localhost:4200,https://app.escola.com`                       | `*`                           |
