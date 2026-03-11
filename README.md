@@ -294,4 +294,3 @@ As seguintes variáveis de ambiente principais podem ser configuradas (por exemp
 | Variável         | Descrição                                                                                                                                                 | Default                       |
 | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
 | `API_KEY`        | Chave de comunicação com a API. Protege os endpoints (exceto `/health`). Ex: `API_KEY=minha_chave_segura_123`                                             | `changeme-insecure-key-12345` |
-| `CORS_ORIGINS`   | Domínios permitidos pelo interceptador CORS, separados por vírgula. Ex: `CORS_ORIGINS=http://localhost:4200,https://app.escola.com`                       | `*`                           |

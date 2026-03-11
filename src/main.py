@@ -20,11 +20,10 @@ import sys
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile, Request
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.security import APIKeyHeader
 
-from src.config import API_HOST, API_KEY, API_PORT, API_TITLE, API_VERSION, CORS_ORIGINS, LOGS_DIR
+from src.config import API_HOST, API_KEY, API_PORT, API_TITLE, API_VERSION, LOGS_DIR
 from src.services.face_service import FaceService
 
 # ── Logging ─────────────────────────────────────────────────────────
@@ -67,23 +66,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# ── CORS ─────────────────────────────────────────────────────────────
-if "*" in CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origin_regex=".*",
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-else:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=CORS_ORIGINS,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+
 
 # ── Autenticação por API Key ────────────────────────────────────────
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)

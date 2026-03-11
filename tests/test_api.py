@@ -226,26 +226,4 @@ class TestUnregisterEndpoint:
         assert resp.json()["status"] == "ok"
 
 
-# ====================================================================
-# CORS
-# ====================================================================
 
-class TestCors:
-    """Testa se o middleware de CORS está ativo e respondendo corretamente."""
-
-    def test_cors_headers_are_present(self, client):
-        c, _ = client
-        # Simulando uma requisição de um frontend Angular no localhost:4200
-        headers = {
-            "Origin": "http://localhost:4200",
-            "Access-Control-Request-Method": "GET",
-        }
-        resp = c.options("/health", headers=headers)
-        
-        # Como o endpoint responde a OPTIONS (preflight do navegador), deve voltar 200 OK
-        assert resp.status_code == 200
-        
-        # Assegura que o cabeçalho Access-Control-Allow-Origin está na resposta
-        # O valor será o domínio requisitado (devido à configuração do middleware) ou "*"
-        assert "access-control-allow-origin" in resp.headers
-        assert resp.headers["access-control-allow-origin"] in ("*", "http://localhost:4200")
